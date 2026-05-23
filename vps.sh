@@ -459,27 +459,27 @@ start_vm() {
 
         cat > "$QEMU_CMD_FILE" <<EOF
 #!/usr/bin/env bash
-exec qemu-system-x86_64 \\
-  -name "$VM_NAME" \\
-  -machine "q35,accel=$accel" \\
-  -cpu "$CPU_ARG" \\
-  -smp "$CPUS",sockets=1,cores="$CPUS",threads=1 \\
-  -m "$MEMORY" \\
-  -device ich9-ahci,id=sata \\
-  -drive "file=$IMG_FILE,format=qcow2,if=none,id=drive0,cache=writeback,discard=unmap" \\
-  -device ide-hd,drive=drive0,bus=sata.0 \\
-  -drive "file=$WINDOWS_ISO,media=cdrom,if=none,id=cdrom0,readonly=on" \\
-  -device ide-cd,drive=cdrom0,bus=sata.1 \\
-  $extra_drive_line \\
-  -boot menu=on,order=d \\
-  -netdev "$netdev" \\
-  -device e1000,netdev=net0 \\
-  -device qemu-xhci,id=xhci \\
-  -device usb-tablet,bus=xhci.0 \\
-  -device virtio-rng-pci \\
-  -rtc base=localtime,clock=host \\
-  -vga std \\
-  -display "vnc=127.0.0.1:$VNC_DISPLAY" \\
+exec qemu-system-x86_64 \
+  -name "$VM_NAME" \
+  -machine "q35,accel=$accel" \
+  -cpu "$CPU_ARG" \
+  -smp "$CPUS",sockets=1,cores="$CPUS",threads=1 \
+  -m "$MEMORY" \
+  -device ich9-ahci,id=sata \
+  -drive "file=$IMG_FILE,format=qcow2,if=none,id=drive0,cache=writeback,discard=unmap" \
+  -device ide-hd,drive=drive0,bus=sata.0 \
+  -drive "file=$WINDOWS_ISO,media=cdrom,if=none,id=cdrom0,readonly=on" \
+  -device ide-cd,drive=cdrom0,bus=sata.1 \
+  $extra_drive_line \
+  -boot menu=on,order=d \
+  -netdev "$netdev" \
+  -device e1000,netdev=net0 \
+  -device qemu-xhci,id=xhci \
+  -device usb-tablet,bus=xhci.0 \
+  -device virtio-rng-pci \
+  -rtc base=localtime,clock=host \
+  -vga std \
+  -display "vnc=127.0.0.1:$VNC_DISPLAY" \
   -no-shutdown 2>&1 | tee -a "$RUN_DIR/$VM_NAME.qemu.log"
 EOF
     else
@@ -487,20 +487,20 @@ EOF
         print_status INFO "Console mode is available with: $0 console $VM_NAME"
         cat > "$QEMU_CMD_FILE" <<EOF
 #!/usr/bin/env bash
-exec qemu-system-x86_64 \\
-  -name "$VM_NAME" \\
-  -machine "accel=$accel" \\
-  -cpu "$CPU_ARG" \\
-  -smp "$CPUS" \\
-  -m "$MEMORY" \\
-  -drive "file=$IMG_FILE,format=qcow2,if=virtio,cache=writeback,discard=unmap" \\
-  -drive "file=$SEED_FILE,format=raw,if=virtio,readonly=on" \\
-  -netdev "$netdev" \\
-  -device virtio-net-pci,netdev=net0 \\
-  -device virtio-rng-pci \\
-  -device virtio-balloon-pci \\
-  -nographic \\
-  -serial mon:stdio \\
+exec qemu-system-x86_64 \
+  -name "$VM_NAME" \
+  -machine "accel=$accel" \
+  -cpu "$CPU_ARG" \
+  -smp "$CPUS" \
+  -m "$MEMORY" \
+  -drive "file=$IMG_FILE,format=qcow2,if=virtio,cache=writeback,discard=unmap" \
+  -drive "file=$SEED_FILE,format=raw,if=virtio,readonly=on" \
+  -netdev "$netdev" \
+  -device virtio-net-pci,netdev=net0 \
+  -device virtio-rng-pci \
+  -device virtio-balloon-pci \
+  -nographic \
+  -serial mon:stdio \
   -no-shutdown 2>&1 | tee -a "$RUN_DIR/$VM_NAME.qemu.log"
 EOF
     fi
